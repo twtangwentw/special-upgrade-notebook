@@ -133,3 +133,127 @@ $$F$$ 是<mark style="color:green;">基本关系</mark> $$R$$ 的一个或一组
 
 ## 2.4 关系代数 <a href="#2.4-relational-algebra" id="2.4-relational-algebra"></a>
 
+{% hint style="info" %}
+关系代数是一种<mark style="color:orange;">抽象的查询语言</mark>，它用<mark style="color:blue;">对关系</mark>的<mark style="color:red;">运算</mark>来表达查询
+
+传统集合运算：<mark style="background-color:purple;">并、差、交、笛卡尔积</mark>
+
+专门的关系运算：<mark style="background-color:red;">选择、投影、连接、除</mark>
+{% endhint %}
+
+| 运算符        | 含义   |
+| ---------- | ---- |
+| $$\cup$$   | 并    |
+| $$-$$      | 差    |
+| $$\cap$$   | 交    |
+| $$\times$$ | 笛卡尔积 |
+| $$\sigma$$ | 选择   |
+| $$\Pi$$    | 投影   |
+| $$\Join$$  | 连接   |
+| $$\div$$   | 除    |
+
+### 2.4.1 传统的集合运算 <a href="#2.4.1" id="2.4.1"></a>
+
+1.  并(union)
+
+    $$R \cup S = \text{\{} t | t \in R \lor t \in S \text{\}}$$
+2.  差(except)
+
+    $$R \cup S = \text{\{} t | t \in R \land t \notin S \text{\}}$$
+3.  交(intersection)
+
+    $$R \cup S = \text{\{} t | t \in R \land t \in S \text{\}}$$
+4.  笛卡尔积(cartesian product)
+
+    $$R \cup S = \text{\{} \overgroup{t_rt_s} | t_r \in R \land t_s \in S \text{\}}$$
+
+{% hint style="info" %}
+$$R(X, Z)$$，_X_ 和 _Z_ 是属性组。当 t\[_X_] = x 时，x 在 R 中的<mark style="color:red;">象集</mark>定义为
+
+$$Z_x =  \text{\{} t[Z] | t \in R, t[X] = x \text{\}}$$
+{% endhint %}
+
+|    X    |    Z    |
+| :-----: | :-----: |
+| $$x_1$$ | $$z_1$$ |
+| $$x_1$$ | $$z_1$$ |
+| $$x_1$$ | $$z_2$$ |
+| $$x_2$$ | $$z_3$$ |
+| $$x_2$$ | $$z_4$$ |
+| $$x_3$$ | $$z_5$$ |
+| $$x_3$$ | $$z_6$$ |
+
+$$x_1$$在 R 上的象集 $$Z_{x1} =  \text{\{} Z_1,Z_2 \text{\}}$$
+
+$$x_2$$在 R 上的象集 $$Z_{x1} =  \text{\{} Z_3,Z_ 4\text{\}}$$
+
+$$x_3$$在 R 上的象集 $$Z_{x1} =  \text{\{} Z_5,Z_ 6\text{\}}$$
+
+### 2.4.2 专门的关系运算 <a href="#2.4.2" id="2.4.2"></a>
+
+**一、选择：**
+
+{% hint style="info" %}
+选择又称限制。它是在关系 _R_ 选择满足给定条件的各元组，记作：$$\color{red} \sigma_F(R) = \text{\{} t | t \in R \land F(t) \text{\}}$$****
+{% endhint %}
+
+F表示选择条件，它是一个逻辑表达式，取逻辑值 `true` 或 `false`
+
+逻辑表达式的基本形式为：$$\color{red} X_1 \theta Y_1$$
+
+当 $$X_1 , Y_1$$ 是一个属性值时，$$\theta$$ 是比较运算符：<mark style="color:blue;">大于</mark>($$\gt$$)、<mark style="color:purple;">大于等于</mark>($$\ge$$)、<mark style="color:orange;">小于</mark>($$\lt$$)、<mark style="color:red;">小于等于</mark>($$\le$$)、<mark style="color:yellow;">等于</mark>($$=$$)、<mark style="color:green;">不等于</mark>($$\lt\gt$$)
+
+当 $$X_1 , Y_1$$ 是一个逻辑值是， $$\theta$$ 是逻辑运算符：<mark style="color:green;">与</mark>($$\land$$)、<mark style="color:blue;">或</mark>($$\lor$$)
+
+或者形式为：$$\color{red} \theta Y_1$$，则 $$\theta$$ 为 <mark style="color:purple;">非</mark>($$┐$$)
+
+eg：$$\sigma_{Sdept = 'IS'}(Student)$$
+
+**二、投影：**
+
+{% hint style="info" %}
+关系 _R_ 上的投影是从 _R_ 中<mark style="color:purple;">选择出若干属性列</mark>组成新的关系。记住：
+
+$$\color{red} \Pi_A(R) = \text{\{} t[A] | t < R \text{\}}$$
+{% endhint %}
+
+A 是属性属性组，R 是关系
+
+eg：$$\Pi_{Sdept}(Student)$$，$$\Pi_{Sname, Sdept}(Student)$$
+
+**三、连接：**
+
+{% hint style="info" %}
+从两关系的笛卡尔积中选取属性间满足一定条件的元组。记作：
+
+$$\color{red}{ R \underset{A \theta B}{\Join} S = \text{\{} \widehat{t_rt_s} | t_r \in R \land t_s \in S \land t_r[A] \theta t_s[B] \text{\}}}$$
+{% endhint %}
+
+A 和 B 分别为关系 R 和 S 上的数列相等且可比的属性组，θ 是比较运算符
+
+θ 为 = 时的连接为等值连接：$$R \underset{A =B}{\Join} S = \text{\{} \widehat{t_rt_s} | t_r \in R \land t_s \in S \land t_r[A] = t_s[B] \text{\}}$$
+
+<mark style="background-color:purple;">自然连接是一种特殊的等值连接</mark>：要求进行连接的两个关系进行比较的分量是同名的属性组，并在结果在去掉相同的属性列，即 $$R \Join S = \text{\{} \widehat{t_rt_s}[U-B] | t_r \in R \land t_s \in S \land t_r[A] = t_s[B] \text{\}}$$ _U_ 是 _R_ 和 _S_ 的全体属性集合，_B_ 是 _R_ 和 _S_ 共有的属性
+
+外连接：保留自然连接的悬浮元组(共有属性值没有匹配的值的元组)
+
+左连接：只保留S的属性组为空的悬浮元组
+
+右连接：只保留R的属性组为空的悬浮元组
+
+**四、除：**
+
+{% hint style="info" %}
+$$R(X, Y)$$，$$S(Y, Z)$$
+
+$$\color {red} R \div S =  \text {\{} t_r[X] \in R \land \Pi_Y(S) \sube Y_x \text {\}} = T$$\
+T的属性 包含在 R 但不包含在 S 中，<mark style="color:red;">且T 和 S\[Y] 的笛卡尔积是 R 的子集</mark>
+{% endhint %}
+
+### 2.4.3 关系代数总结 <a href="#2.4.3" id="2.4.3"></a>
+
+<mark style="color:purple;">eg：查询所有选修了课程的学生的学号和姓名</mark>
+
+<mark style="color:purple;"></mark>$$\Pi_{Sno, Cno}(SC) \div \Pi_{Cno}(Course) \Join \Pi_{Sno, Sname}(Student)$$<mark style="color:purple;"></mark>
+
+<mark style="background-color:purple;">关系代数经过有限次复合后形成的形成的表达式称为</mark><mark style="background-color:purple;"><mark style="color:red;">**关系代数表达式**<mark style="color:red;"></mark>
