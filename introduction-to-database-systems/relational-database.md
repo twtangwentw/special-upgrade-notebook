@@ -84,7 +84,7 @@ _F_：为属性间数的依赖关系集合
 关系模型<mark style="color:blue;">给出</mark>了关系操作的<mark style="color:red;">能力说明</mark>，但<mark style="color:blue;">不</mark>对关系数据库管理系统语言<mark style="color:blue;">给出具体</mark>的<mark style="color:red;">语法要求</mark>
 {% endhint %}
 
-#### 2.2.1 基本的关系操作 <a href="#2.2.1" id="2.2.1"></a>
+### 2.2.1 基本的关系操作 <a href="#2.2.1" id="2.2.1"></a>
 
 > 关系模型中常用的关系操作包括<mark style="color:blue;">查询(query)</mark>和<mark style="color:purple;">插入(insert)</mark>、<mark style="color:purple;">删除(delete)</mark>、<mark style="color:purple;">更新(update)</mark>两大类操作
 
@@ -96,5 +96,40 @@ _F_：为属性间数的依赖关系集合
 关系的操作特点是集合操作方式，即操作的对象和结构都是集合
 {% endhint %}
 
-### 2.3 关系完整性 <a href="#2.3-relationship-integrity" id="2.3-relationship-integrity"></a>
+## 2.3 关系完整性 <a href="#2.3-relationship-integrity" id="2.3-relationship-integrity"></a>
+
+{% hint style="info" %}
+关系模型中又<mark style="color:blue;">三类</mark>完整性约束条件：<mark style="color:orange;">实体完整性(entity integrity)</mark>、<mark style="color:red;">参照完整性(referential integrity)</mark>、<mark style="color:green;">用户自定义完整性(user-defined integrity)</mark>
+{% endhint %}
+
+### 2.3.1 实体完整性 <a href="#2.3.1" id="2.3.1"></a>
+
+{% hint style="info" %}
+若属性(指一个或一组属性) _<mark style="color:purple;">A</mark>_ 是基本关系 _<mark style="color:purple;">R</mark>_ 的主属性，则 _<mark style="color:purple;">A</mark>_ 不能取空值(null)。
+{% endhint %}
+
+实体完整性规则：
+
+1. 实体完整性针对于于基本关系
+2. 以主码作为唯一性标识
+3. 主码的属性不能为空
+
+### 2.3.2 参照完整性 <a href="#2.3.2" id="2.3.2"></a>
+
+$$F$$ 是<mark style="color:green;">基本关系</mark> $$R$$ 的一个或一组<mark style="color:red;">属性</mark>，但不是关系 $$R$$ 的码，$$K_s$$ 是基本关系 $$S$$ 的<mark style="color:red;">主码</mark>。如果 $$F$$ 与 $$K_s$$ 相对应，则称 $$F$$ 是 $$R$$ 的外码(foreign key)，并称基本关系 $$R$$ 为<mark style="color:blue;">参照关系</mark>(referencing relation)，基本关系 $$S$$ 为被<mark style="color:blue;">参照关系</mark>(referenced relation)或<mark style="color:blue;">目标关系</mark>(target relation)。且关系 $$R$$ 与 $$S$$ 可以是相同的关系
+
+<img src="../.gitbook/assets/file.drawing (2).svg" alt="参照完整性示意图" class="gitbook-drawing">
+
+参照完整性规则：
+
+1. 外码可以取空值
+2. 外面可以取被参照关系某个元组的主码值
+
+### 2.3.3 用户自定义完整性 <a href="#2.3.3" id="2.3.3"></a>
+
+{% hint style="info" %}
+用户自定义完整性就是针对某一具体关系数据库的约束条件，它反映某一具体值应用所涉及的数据必须满足的予以要求
+{% endhint %}
+
+## 2.4 关系代数 <a href="#2.4-relational-algebra" id="2.4-relational-algebra"></a>
 
