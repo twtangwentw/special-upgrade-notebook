@@ -1,8 +1,10 @@
 ---
 description: 结构化查询语言(Structured Query Language，SQL)是关系数据库的标准语言，也是一个通用的、功能极强的关系数据库语言
+cover: ../.gitbook/assets/1634536220844.jpg
+coverY: 0
 ---
 
-# 第三章\~关系数据库标准SQl
+# 第三章\~关系数据库标准SQL
 
 ## 3.1 SQL 概述 <a href="#3.1-overview" id="3.1-overview"></a>
 
@@ -372,37 +374,239 @@ WHERE F.Cpno = S.Cno AND S.Cpno IS NOT NULL;
 // 查询学生的学生信息和其选课信息
 SELECT S.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade
 FROM Student S LEFT OUTER JOIN SC ON (S.Sno = SC.Sno);
+
+// 查询每个学生的学号、姓名、选修课程名、成绩
+SELECT S.Sno, Sname, Cname, Grade
+FROM Student S, Course, SC
+WHERE S.Sno = SC.Sno AND Course.Cno = SC.Cno;
 ```
 
 ### 3.4.3 嵌套查询 <a href="#3.4.3" id="3.4.3"></a>
 
+{% hint style="info" %}
+<mark style="color:purple;">子查询</mark>的查询条件<mark style="color:orange;">不依赖父查询</mark>的查询称为<mark style="color:red;">不相关子查询</mark>
 
+<mark style="color:blue;">子查询</mark>的查询条件<mark style="color:purple;">依赖父查询</mark>的查询结果称为<mark style="color:red;">相关子查询</mark>，<mark style="background-color:red;">整个查询语句称为相关嵌套查询</mark>
+{% endhint %}
+
+```sql
+// === 不相关子查询 ===
+// 查询与刘晨在同一个系的学生
+SELECT * FROM Student
+WHERE Sdept IN (
+    SELECT Sdept FROM Student 
+    WHERE Sname = '刘晨'
+);
+
+// 查询了选修了“信息系统”的学生序号和姓名
+SELECT Sno, Sname FROM Student
+WHERE Sno IN (
+    SELECT Sno FROM SC
+    WHERE Cno IN (
+        SELECT Cno FROM Course
+        WHERE Cname = '信息系统'
+    )
+);
+
+// === 相关子查询 ===
+// 找出每个选项超过他自己选修课程平均成绩的课程号
+SELECT Sno, Cno
+FROM SC AS o
+WHERE Grade > (
+    SELECT AVG(Grade) FROM SC i
+    WHERE o.Sno = i.Sno
+);
+
+// === 带有 ANY(SOME) 或 ALL 谓词的子查询
+// 查询非计算机科学系中比计算机科学系任意一个学生年龄小的学生姓名和年龄
+SELECT Sname, Sage FROM Student
+WHERE Sdept != 'CS' AND Sage < ANY (
+    SELECT Sage FROM Student
+    WHERE Sdept = 'CS'
+);
+// 查询非计算机科学系中比计算机科学系所有学生年龄小的学生姓名和年龄
+SELECT Sname, Sage FROM Student
+WHERE Sdept != 'CS' AND Sage < ALL (
+    SELECT Sage FROM Student
+    WHERE Sdept = 'CS'
+);
+
+// === 带有 EXISTS 谓词的子查询
+// 查询所有选修了 1 号课程的学生姓名
+SELECT Sname FROM Student
+WHERE EXISTS (
+    SELECT * FROM SC
+    WHERE SC.Sno = Student.Sno AND Cno = '1'
+);
+// 查询所有没有选修了 1 号课程的学生姓名
+SELECT Sname FROM Student
+WHERE NOT EXISTS (
+    SELECT * FROM SC
+    WHERE SC.Sno = Student.Sno AND Cno = '1'
+);
+```
 
 ### 3.4.4 集合查询 <a href="#3.4.4" id="3.4.4"></a>
 
+{% hint style="info" %}
+集合操作主要包括<mark style="color:purple;">并操作(UNION)</mark>、<mark style="color:red;">交操作(INTERSECT)</mark>、<mark style="color:green;">差(EXCEPT)</mark>
+{% endhint %}
+
+> <mark style="background-color:red;">参加集合操作的个查询结果的列数必须相同，对应项的数据类型也必须相同</mark>
+
+```sql
+// 查询计算机科学系的学生及年龄不大于 19 岁的学生
+SELECT * FROM Student WHERE Sdept = 'CS'
+UNION        // 保留重复的元组使用 UNION ALL
+SELECT * FROM Student WHERE Sage <= 19;
+// 查询计算机科学系学生且年龄不大于 19 岁的学生
+SELECT * FROM Student WHERE Sdept = 'CS'
+INTERSECT
+SELECT * FROM Student WHERE Sage <= 19;
+// 查询计算机科学系学生中年龄大于 19 岁的学生
+SELECT * FROM Student WHERE Sdept = 'CS'
+EXCEPT
+SELECT * FROM Student WHERE Sage <= 19;
+```
+
 ### 3.4.5 基于派生表的查询 <a href="#3.4.5" id="3.4.5"></a>
 
-### 3.4.6 SELECT 语句的一般格式 <a href="#3.4.6" id="3.4.6"></a>
+{% hint style="info" %}
+当子查询出现在 FROM 子句中，这时的子查询生成的<mark style="color:red;">临时派</mark>生表成为子查询的<mark style="color:red;">查询对象</mark>
+
+<mark style="background-color:red;">且生成的派生表必须自定义给别名</mark>
+{% endhint %}
+
+```sql
+// 查询所有选修了 1 号课程的学生姓名
+SELECT Sname
+FROM Student, (SELECT Sno FROM SC WHERE Cno = '1') S
+WHERE Student.Sno = S.Sno;
+```
 
 ## 3.5 数据更新 <a href="#3.5-data-update" id="3.5-data-update"></a>
 
+> 数据更新有三种：向表中添加若干行数据、修改表中的书和删除表中的若干行数据
+
 ### 3.5.1 插入数据 <a href="#3.5.1" id="3.5.1"></a>
+
+{% hint style="info" %}
+SQL 的数据插入语句 INSERT 有两种形式，一种时插入一个元组，另一种是插入一个子查询结果
+{% endhint %}
+
+```sql
+// === 插入语句的一般格式 ===
+INSERT INTO <表名> [(<属性列>[,<属性列>] ···)]
+VALUES (<常量>[,<常量>]···)
+// 插入一条数据到学生表中
+INSERT INTO Student(Sno, Sname, Ssex, Sdept, Sage)
+VALUES ('201215128', '陈东', '男', 'IS', 18);
+
+// === 插入子查询结果 ===
+INSERT INTO <表名> [(<属性列>[,<属性列>] ···)]
+<子查询>
+```
 
 ### 3.5.2 修改数据 <a href="#3.5.2" id="3.5.2"></a>
 
+```sql
+// 修改数据的一般格式
+UPDATE <表名>
+SET <列名> = <表达式>[, <列名> = <表达式>] ···
+[WHERE <条件表达式>];
+
+// 将学号为 201215121 的年龄修改为 22 岁
+UPDATE Student
+SET Sage = 22
+WHERE Sno = '201215121';
+
+// 将所有学生的年龄增大一岁
+UPDATE Student
+SET Sage = Sage + 1;
+```
+
 ### 3.5.3 删除数据 <a href="#3.5.3" id="3.5.3"></a>
+
+```sql
+// 删除数据的一般格式为
+DELETE FROM <表名>
+[WHERE <条件表达式>];
+
+// 删除学号为 201215128 的学生信息
+DELETE FROM Student
+WHERE Sno = '201215128';
+
+// 删除所有学生选课记录
+DELETE FROM SC;
+```
 
 ## 3.6 空值处理 <a href="#3.6-null-handle" id="3.6-null-handle"></a>
 
+{% hint style="info" %}
+在 WHERE 和 HAVING 中只有 TRUE 结果才会被选出作为输出结果
+
+空值的判断不能使用 = 或者 != ，需要使用 IS NOT NULL 或者 IS NULL
+{% endhint %}
+
+| X | Y | X AND Y | X OR Y | NOT X |
+| - | - | ------- | ------ | ----- |
+| T | T | T       | T      | F     |
+| T | U | U       | T      | F     |
+| T | F | F       | T      | F     |
+| U | T | U       | T      | U     |
+| U | U | U       | U      | U     |
+| U | F | F       | U      | U     |
+| F | T | F       | T      | T     |
+| F | U | F       | U      | T     |
+| F | F | F       | F      | T     |
+
 ## 3.7 视图 <a href="#3.7-view" id="3.7-view"></a>
+
+视图是从一个或几个基本表(或视图)导出的表。它是一个虚表，数据库中只存放视图的定义，不存放视图对应的数据，视图只是基本表数据的映射，当基本表数据改变时，视图的数据也会改变
 
 ### 3.7.1 定义视图 <a href="#3.7.1" id="3.7.1"></a>
 
+```sql
+// 视图定义的一般语法
+CREATE VIEW <视图名> [(<列名>[,<列名>] ···)]
+AS <查询语句>
+[WITH CHECK OPTION]; // 使用 WITH CHECK OPTION 表示对视图进行增删改操作时会自动加上查询语句的条件
+
+// 建立信息系学生信息视图
+CREATE VIEW IS_Stuent
+AS 
+SELECT Sno, Sname, Sage
+FROM Student
+WHERE Sdept = 'IS'
+WITH CHECK OPTION;
+
+// 建立学生的学号和平均成绩的视图
+CREATE VIEW SAG(Sno, AGrade)
+AS
+SELECT Sno, AVG(Grade)
+FROM SC
+GROUP BY Sno;
+```
+
 ### 3.7.2 查询视图 <a href="#3.7.2" id="3.7.2"></a>
+
+{% hint style="info" %}
+和查询基本表类似，但是在视图中有聚集函数时可能无法正确转换
+{% endhint %}
 
 ### 3.7.3 更新视图 <a href="#3.7.3" id="3.7.3"></a>
 
+{% hint style="info" %}
+一般行列子集(视图来自一个表)视图是可更新的，但是各个管理系统一般都只允许对行列子集视图进行更新
+{% endhint %}
+
 ### 3.7.4 视图的作用 <a href="#3.7.4" id="3.7.4"></a>
+
+1. 视图能够简化用户的操作
+2. 视图使用户能够以多重角度看待同一数据
+3. 视图对重构数据库提供了一定程度的逻辑独立性
+4. 视图能够对机密数据提供安全保护
+5. 适当的利用视图可以更清晰的表达查询
 
 ## 3.8 SQL 总结 <a href="#3.8-sql-summary" id="3.8-sql-summary"></a>
 
@@ -411,6 +615,7 @@ FROM Student S LEFT OUTER JOIN SC ON (S.Sno = SC.Sno);
 ADD
 ALTER
 ALL
+ANY | SOME
 AS
 ASC | DESC
 AUTHORIZATION
@@ -421,10 +626,13 @@ CREATE
 DISTINCT
 DROP
 ESCAPE // 定义换码字符，LIKE '\_' ESCAPT '\'
+EXISTS
 FOREIGN
 FROM
 GROUP BY ··· HAVING
 INDEX
+INSERT INTO ··· VALUES
+INTERSECT
 KEY
 ON
 ORDER BY
@@ -435,8 +643,10 @@ SCHEMA
 SET ··· TO ···
 SHOW
 TABLE
+UNION
 UNIQUE
 VIEW
 WHERE
+WITH CHECK OPTION
 ```
 {% endcode %}
