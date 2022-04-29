@@ -5,4 +5,4 @@
 * [第一章\~绪论](README.md)
 * [第二章\~关系数据库](introduction-to-database-systems/relational-database.md)
 * [第三章\~关系数据库标准SQL](introduction-to-database-systems/structured-query-language.md)
-* [第四章\~数据库安全性](introduction-to-database-systems/di-si-zhang-shu-ju-ku-an-quan-xing.md)
+* [第四章\~数据库安全性](introduction-to-database-systems/database-security.md)

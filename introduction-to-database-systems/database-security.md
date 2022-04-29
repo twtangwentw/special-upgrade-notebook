@@ -6,13 +6,13 @@ coverY: 0
 
 # 第四章\~数据库安全性
 
-## 4.1 数据库安全性概述
+## 4.1 数据库安全性概述 <a href="#4.1-overview-of-database-securit" id="4.1-overview-of-database-securit"></a>
 
 {% hint style="info" %}
 数据库的安全性是指<mark style="color:purple;">保护数据库</mark>以防止不合法使用所造成的<mark style="color:red;">数据泄露、更改或破坏</mark>
 {% endhint %}
 
-### 4.1.1 数据库的不安全因素(即三类安全性问题)
+### 4.1.1 数据库的不安全因素(即三类安全性问题) <a href="#4.1.1" id="4.1.1"></a>
 
 1.  **非授权用户对数据库的恶意存取和破坏**
 
@@ -24,7 +24,7 @@ coverY: 0
 
     操作系统安全性脆弱，网络协议安全保障的不足等都会造成数据库安全性的破解
 
-## 4.2 数据库安全性控制
+## 4.2 数据库安全性控制 <a href="#4.2-database-security-control" id="4.2-database-security-control"></a>
 
 数据库安全技术主要包括：用户身份鉴定、多层存取控制、审计、视图和数据加密等
 
@@ -36,7 +36,7 @@ coverY: 0
 > 4. 通过设置简单入侵检测规则，对异常用户行为检测和处理
 > 5. 在数据层，对数据进行有效备份
 
-### 4.2.1 用户身份鉴定
+### 4.2.1 用户身份鉴定 <a href="#4.2.1" id="4.2.1"></a>
 
 用户是否鉴定的方法：
 
@@ -45,7 +45,7 @@ coverY: 0
 3. 生物特定鉴定：如指纹
 4. 智能卡鉴定：不可复制的硬件
 
-### 4.2.2 存取控制
+### 4.2.2 存取控制 <a href="#4.2.2" id="4.2.2"></a>
 
 <mark style="background-color:red;">存取控制机制主要包括定义用户权限和合法权限检查两部分</mark>
 
@@ -72,7 +72,7 @@ B1 级的数据库管理系统支持<mark style="background-color:red;">强制�
 
 每一个对象被标记为一个密级，每一个用户也被标记为拥有某一个级别的许可证。对于任意一个对象，只有具有合法许可证的用户才可以存取。强制存取控制相对比较严格
 
-### 4.2.3 自主存取控制方法
+### 4.2.3 自主存取控制方法 <a href="#4.2.3" id="4.2.3"></a>
 
 <mark style="background-color:red;">用户权限的两个要素：</mark><mark style="background-color:red;">**数据库对象**</mark><mark style="background-color:red;">和</mark><mark style="background-color:red;">**操作类型**</mark>，<mark style="background-color:purple;">定义存取权限称为</mark><mark style="background-color:purple;">**授权（authorization）**</mark>
 
@@ -94,7 +94,7 @@ B1 级的数据库管理系统支持<mark style="background-color:red;">强制�
 {% endtab %}
 {% endtabs %}
 
-### 4.2.4 授权：授予和回收
+### 4.2.4 授权：授予和回收 <a href="#4.2.4" id="4.2.4"></a>
 
 <mark style="color:purple;">**GRANT**</mark>：授予权限
 
@@ -164,7 +164,7 @@ _**用户默认的权限表：**_
 | RESOURCE | 不可以         | 不可以           | 可以           | 可以                |
 | CONNECT  | 不可以         | 不可以           | 不可以          | 可以，但是需要GRANT 授予权限 |
 
-### 4.2.5 数据库角色
+### 4.2.5 数据库角色 <a href="#4.2.5" id="4.2.5"></a>
 
 > <mark style="background-color:purple;">数据库角色是被命名的一组与数据库相关的权限，角色是权限的集合</mark>
 
@@ -216,7 +216,7 @@ ON TABLE Student
 FROM R1;
 ```
 
-### 4.2.6 强制存取控制
+### 4.2.6 强制存取控制 <a href="#4.2.6" id="4.2.6"></a>
 
 在强制存取控制中，数据库管理系统所管理的全部实体分为主题和客体两大类
 
@@ -235,7 +235,7 @@ FROM R1;
 
 密级的次序是 <mark style="color:blue;">**TS >= S >= C >= P**</mark>
 
-## 4.3 视图机制
+## 4.3 视图机制 <a href="#4.2-view-control" id="4.2-view-control"></a>
 
 {% hint style="info" %}
 为不同的用户定义不同的视图，把数据对象限制在一定的范围内。也就是通过视图机制把要保密的数据隐藏对无权存取的用户隐藏起来，从而自动对数据提供一定程度的安全保护
@@ -243,18 +243,18 @@ FROM R1;
 
 <mark style="background-color:red;">视图机制简介地实现支持存取谓词地用户权限定义</mark>
 
-## 4.4 审计
+## 4.4 审计 <a href="#4.4-audit" id="4.4-audit"></a>
 
 {% hint style="info" %}
 审计功能把用户对数据库地所有操作自动记录下来放入到审计日志中，审计员可以通过审计日志监控数据库中地各种行为，重现导致数据库现有状态改变地一系列事件，找出非法存取地数据地人、时间和内容等
 {% endhint %}
 
-## 4.5 数据加密
+## 4.5 数据加密 <a href="#4.5-data-encryption" id="4.5-data-encryption"></a>
 
 1. 存储加密
 2. 传输加密
 
-## 4.6 其它安全性保护
+## 4.6 其它安全性保护 <a href="#4.6-other-security-protection" id="4.6-other-security-protection"></a>
 
 1. 推理控制
 2. 隐藏信道
