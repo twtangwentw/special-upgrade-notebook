@@ -10,3 +10,4 @@
 * [第六章\~关系数据理论](introduction-to-database-systems/relational-data-theory.md)
 * [第七章\~数据库设计](introduction-to-database-systems/database-design.md)
 * [第八章\~数据库恢复技术](introduction-to-database-systems/database-recovery-technology.md)
+* [第九章\~并发控制](introduction-to-database-systems/concurrency-control.md)
