@@ -11,3 +11,7 @@
 * [第七章\~数据库设计](introduction-to-database-systems/database-design.md)
 * [第八章\~数据库恢复技术](introduction-to-database-systems/database-recovery-technology.md)
 * [第九章\~并发控制](introduction-to-database-systems/concurrency-control.md)
+
+## 🖥 Java 基础入门 <a href="#getting-started-with-java-basics" id="getting-started-with-java-basics"></a>
+
+* [第一章\~面向对象成员设计](getting-started-with-java-basics/di-yi-zhang-mian-xiang-dui-xiang-cheng-yuan-she-ji.md)
