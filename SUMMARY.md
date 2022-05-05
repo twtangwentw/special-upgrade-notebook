@@ -14,4 +14,4 @@
 
 ## 🖥 Java 基础入门 <a href="#getting-started-with-java-basics" id="getting-started-with-java-basics"></a>
 
-* [第一章\~面向对象成员设计](getting-started-with-java-basics/di-yi-zhang-mian-xiang-dui-xiang-cheng-yuan-she-ji.md)
+* [第一章\~面向对象程序设计](getting-started-with-java-basics/object-oriented-programming.md)
