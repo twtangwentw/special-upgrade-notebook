@@ -15,3 +15,4 @@
 ## 🖥 Java 基础入门 <a href="#getting-started-with-java-basics" id="getting-started-with-java-basics"></a>
 
 * [第一章\~面向对象程序设计](getting-started-with-java-basics/object-oriented-programming.md)
+* [第二章\~数组](getting-started-with-java-basics/array.md)
