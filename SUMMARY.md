@@ -16,3 +16,4 @@
 
 * [第一章\~面向对象程序设计](getting-started-with-java-basics/object-oriented-programming.md)
 * [第二章\~数组](getting-started-with-java-basics/array.md)
+* [第三章\~异常处理](getting-started-with-java-basics/exception-handling.md)
